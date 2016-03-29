@@ -6,10 +6,10 @@ from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 
 __all__ = ['Address']
-__metaclass__ = PoolMeta
 
 
 class Address:
+    __metaclass__ = PoolMeta
     __name__ = 'party.address'
     full_address_lang = fields.Function(fields.Text('Full Address'),
             'get_full_address_lang')
