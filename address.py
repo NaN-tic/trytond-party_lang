@@ -18,12 +18,13 @@ class Address:
         pool = Pool()
         Configuration = pool.get('party.configuration')
         Address = pool.get('party.address')
+        context = Transaction().context
 
         if self.party and self.party.lang:
             language = self.party.lang.code
         else:
             config = Configuration(1)
-            language = Transaction().context.get('language') or config.party_lang.code
+            language = context.get('language') or config.party_lang.code
 
         with Transaction().set_context(language=language):
             address = Address(self)
