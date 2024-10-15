@@ -5,8 +5,6 @@ from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.transaction import Transaction
 
-__all__ = ['Address']
-
 
 class Address(metaclass=PoolMeta):
     __name__ = 'party.address'
@@ -17,13 +15,16 @@ class Address(metaclass=PoolMeta):
         pool = Pool()
         Configuration = pool.get('party.configuration')
         Address = pool.get('party.address')
+
         context = Transaction().context
 
         if self.party and self.party.lang:
             language = self.party.lang.code
         else:
             config = Configuration(1)
-            language = context.get('language') or config.party_lang.code
+            language = (context.get('language')
+                or config.party_lang and config.party_lang.code
+                or 'en')
 
         with Transaction().set_context(language=language):
             address = Address(self)
